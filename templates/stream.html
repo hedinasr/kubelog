@@ -3,13 +3,19 @@
 <script>
     var output = document.getElementById("output");
 
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', '{{ url_for('stream', namespace=namespace, id=id) }}');
-    xhr.send();
+    async function start() {
+        const response = await fetch('{{ url_for('stream', namespace=namespace, id=id) }}',
+                                     { method: 'GET' });
+        const reader = response.body.pipeThrough(new TextDecoderStream()).getReader();
 
-    setInterval(function() {
-        output.innerHTML = xhr.responseText.replaceAll('\n', '<br>');
-        window.scrollTo(0, document.body.scrollHeight);
-    }, 1000);
+        while (true) {
+            const { value, done } = await reader.read();
+            output.innerHTML += value.replaceAll('\n', '<br>');
+            window.scrollTo(0, document.body.scrollHeight);
+            if (done) break;
+        }
+    }
 
-</script>
+    start();
+
+    </script>
