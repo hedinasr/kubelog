@@ -1,0 +1,15 @@
+<div id="output"></div>
+
+<script>
+    var output = document.getElementById("output");
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', '{{ url_for('stream', namespace=namespace, id=id) }}');
+    xhr.send();
+
+    setInterval(function() {
+        output.innerHTML = xhr.responseText.replaceAll('\n', '<br>');
+        window.scrollTo(0, document.body.scrollHeight);
+    }, 1000);
+
+</script>

@@ -1,0 +1,7 @@
+<div id="content">
+        {% for pod in items %}
+        <li>
+                <a href='{{ url_for('log', namespace=pod.metadata.namespace, id=pod.metadata.name) }}'>{{ pod.metadata.name }}</a>
+        </li>
+        {% endfor %}
+</div>

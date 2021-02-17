@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kubelog
+  namespace: default
+  labels:
+    app: kubelog
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: kubelog
+    spec:
+      serviceAccount: kubelog
+      containers:
+      - name: kubelog
+        image: docker-registry/kubelog:latest
+        imagePullPolicy: Always
